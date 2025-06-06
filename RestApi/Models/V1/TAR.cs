@@ -36,7 +36,7 @@ namespace Compellio.DCAP.Web.RestApi.Models.V1
             Id = x[0],
             Receipt = x[1],
             Checksum = x[2],
-            Data = JsonDocument.Parse(File.ReadAllText($"{x[1]}.json")),
+            Data = JsonDocument.Parse(File.ReadAllText($"{StoragePath}{x[1]}.json")),
             Version = Int32.Parse(x[3]),
         }).ToArray() : new List<TAR>();
 
