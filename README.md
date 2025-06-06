@@ -1,6 +1,8 @@
-# Compellio.DCAP.Web
+# DCAP.Web
 
 ## Running
+
+**Pre-requisite:** the service needs to connect to an Ethereum-compatible blockchain network to issue TARs. For local environments, we recommend running a Hardhat Node according to the instructions in the [compellio/dcap-token-smart-contract](https://github.com/compellio/dcap-token-smart-contract) project.
 
 ### Docker Compose
 
