@@ -3,7 +3,7 @@
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 
 COPY . /source
-WORKDIR /source/Compellio.DCAP.Web
+WORKDIR /source
 
 ARG TARGETARCH
 ARG CONFIGURATION=Debug
@@ -15,7 +15,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
 WORKDIR /app
 
 COPY --from=build /app .
-
-USER $APP_UID
 
 ENTRYPOINT ["dotnet", "Compellio.DCAP.Web.dll"]

@@ -1,0 +1,16 @@
+﻿services:
+  dcap-web:
+    image: ghcr.io/compellio/dcap-web
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      # WARNING: this account is publicly known: any funds sent to them on Mainnet or any other live network WILL BE LOST.
+      DCAP__PrivateKey: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+      DCAP__BlockchainUrl: "http://host.docker.internal:8545/"
+      DCAP__BlockchainId: "31337"
+    volumes:
+      - data:/data
+
+volumes:
+  data:
