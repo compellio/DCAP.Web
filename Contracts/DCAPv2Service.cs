@@ -1,30 +1,34 @@
+using Compellio.DCAP.SmartContracts.DCAPv2.ContractDefinition;
 using Nethereum.Web3;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Contracts.ContractHandlers;
+using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Numerics;
-using Compellio.DCAP.SmartContracts.TestBytes32.ContractDefinition;
+using System.Threading;
 
-namespace Compellio.DCAP.SmartContracts.TestBytes32
+namespace Compellio.DCAP.SmartContracts.DCAPv2
 {
-    public partial class TestBytes32Service : ContractWeb3ServiceBase
+    public partial class DCAPv2Service : ContractWeb3ServiceBase
     {
-        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(IWeb3 web3, TestBytes32Deployment testBytes32Deployment, CancellationTokenSource cancellationTokenSource = null)
+        public static Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(IWeb3 web3, DCAPv2Deployment testBytes32Deployment, CancellationTokenSource cancellationTokenSource = null)
         {
-            return web3.Eth.GetContractDeploymentHandler<TestBytes32Deployment>().SendRequestAndWaitForReceiptAsync(testBytes32Deployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<DCAPv2Deployment>().SendRequestAndWaitForReceiptAsync(testBytes32Deployment, cancellationTokenSource);
         }
 
-        public static Task<string> DeployContractAsync(IWeb3 web3, TestBytes32Deployment testBytes32Deployment)
+        public static Task<string> DeployContractAsync(IWeb3 web3, DCAPv2Deployment testBytes32Deployment)
         {
-            return web3.Eth.GetContractDeploymentHandler<TestBytes32Deployment>().SendRequestAsync(testBytes32Deployment);
+            return web3.Eth.GetContractDeploymentHandler<DCAPv2Deployment>().SendRequestAsync(testBytes32Deployment);
         }
 
-        public static async Task<TestBytes32Service> DeployContractAndGetServiceAsync(IWeb3 web3, TestBytes32Deployment testBytes32Deployment, CancellationTokenSource cancellationTokenSource = null)
+        public static async Task<DCAPv2Service> DeployContractAndGetServiceAsync(IWeb3 web3, DCAPv2Deployment testBytes32Deployment, CancellationTokenSource cancellationTokenSource = null)
         {
             var receipt = await DeployContractAndWaitForReceiptAsync(web3, testBytes32Deployment, cancellationTokenSource);
-            return new TestBytes32Service(web3, receipt.ContractAddress);
+            return new DCAPv2Service(web3, receipt.ContractAddress);
         }
 
-        public TestBytes32Service(IWeb3 web3, string contractAddress) : base(web3, contractAddress)
+        public DCAPv2Service(IWeb3 web3, string contractAddress) : base(web3, contractAddress)
         {
         }
 

@@ -1,5 +1,5 @@
-﻿using Compellio.DCAP.SmartContracts.TestBytes32;
-using Compellio.DCAP.SmartContracts.TestBytes32.ContractDefinition;
+﻿using Compellio.DCAP.SmartContracts.DCAPv2;
+using Compellio.DCAP.SmartContracts.DCAPv2.ContractDefinition;
 using Nethereum.JsonRpc.Client;
 using Nethereum.Web3;
 using System.Security.Cryptography;
@@ -42,27 +42,6 @@ namespace Compellio.DCAP.Web.RestApi.Models.V1
 
         public static void SaveTARs(IList<TAR> tars) => File.WriteAllLines(TARIndexFilename, tars.Select(x => $"{x.Id};{x.Receipt};{x.Checksum};{x.Version}"));
 
-        private static async Task<string> DeployContractAndGetAddress(string checksum)
-        {
-            var account = new Nethereum.Web3.Accounts.Account(PrivateKey, long.Parse(ChainId));
-            var web3 = new Web3(account, RPCEndPoint);
-            web3.TransactionManager.UseLegacyAsDefault = true; //Using legacy option instead of 1559
-            var deploymentHandler = web3.Eth.GetContractDeploymentHandler<TestBytes32Deployment>();
-            ClientBase.ConnectionTimeout = new TimeSpan(0, 5, 0);
-
-            string transactionHash = null;
-            var checksumBytes = Convert.FromHexString(checksum.Substring(2));
-            var deployment = new TestBytes32Deployment() { Checksum = checksumBytes };
-            transactionHash = await deploymentHandler.SendRequestAsync(deployment);
-            Thread.Sleep(2000);
-
-            var transaction = await web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transactionHash);
-            Thread.Sleep(2000);
-
-            var receipt = await web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash);
-            return receipt?.ContractAddress;
-        }
-
         public static async Task<TAR> AddOrUpdateAsync(string tarId, TAR tar)
         {
             if (String.IsNullOrEmpty(tar.Receipt))
@@ -88,8 +67,9 @@ namespace Compellio.DCAP.Web.RestApi.Models.V1
 
             if (String.IsNullOrEmpty(tarId))
             {
-                var contractAddress = await DeployContractAndGetAddress(checksum);
-                newTar.Id = $"urn:tar:eip155.{ChainId}:{contractAddress.Substring(2)}";
+                //var contractAddress = await DeployContractAndGetAddress(checksum);
+                var contractResponse = await contract.DeployAsync("", checksumByteArray, RPCEndPoint, long.Parse(ChainId));
+                newTar.Id = $"urn:tar:eip155.{ChainId}:{contractResponse.ContractAddress.Substring(2)}";
                 newTar.Version = 1;
             }
             else
