@@ -2,11 +2,7 @@ using Compellio.DCAP.SmartContracts.DCAPv2.ContractDefinition;
 using Nethereum.Web3;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Contracts.ContractHandlers;
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Threading;
 
 namespace Compellio.DCAP.SmartContracts.DCAPv2
 {
@@ -32,18 +28,18 @@ namespace Compellio.DCAP.SmartContracts.DCAPv2
         {
         }
 
-        public Task<string> ChecksumQueryAsync(ChecksumFunction checksumFunction, BlockParameter blockParameter = null)
+        public Task<byte[]> ChecksumQueryAsync(ChecksumFunction checksumFunction, BlockParameter blockParameter = null)
         {
-            return ContractHandler.QueryAsync<ChecksumFunction, string>(checksumFunction, blockParameter);
+            return ContractHandler.QueryAsync<ChecksumFunction, byte[]>(checksumFunction, blockParameter);
         }
 
 
-        public Task<string> ChecksumQueryAsync(BigInteger version, BlockParameter blockParameter = null)
+        public Task<byte[]> ChecksumQueryAsync(BigInteger version, BlockParameter blockParameter = null)
         {
             var checksumFunction = new ChecksumFunction();
             checksumFunction.Version = version;
 
-            return ContractHandler.QueryAsync<ChecksumFunction, string>(checksumFunction, blockParameter);
+            return ContractHandler.QueryAsync<ChecksumFunction, byte[]>(checksumFunction, blockParameter);
         }
 
         public Task<string> OwnerQueryAsync(OwnerFunction ownerFunction, BlockParameter blockParameter = null)

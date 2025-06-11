@@ -69,6 +69,11 @@ namespace Compellio.DCAP.Web.RestApi.Models.V1
             {
                 //var contractAddress = await DeployContractAndGetAddress(checksum);
                 var contractResponse = await contract.DeployAsync("", checksumByteArray, RPCEndPoint, long.Parse(ChainId));
+                if (contractResponse.Exception != null)
+                {
+                    throw new Exception("Contract deployment failed, please check that there are enough funds in the wallet corresponding to the provided private key in the configuration.", contractResponse.Exception);
+                }
+
                 newTar.Id = $"urn:tar:eip155.{ChainId}:{contractResponse.ContractAddress.Substring(2)}";
                 newTar.Version = 1;
             }
