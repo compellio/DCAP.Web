@@ -15,6 +15,7 @@ namespace Compellio.DCAP.Web
             TAR.RPCEndPoint = builder.Configuration.GetSection("DCAP").GetValue<string>("BlockchainUrl");
             TAR.PrivateKey = builder.Configuration.GetSection("DCAP").GetValue<string>("PrivateKey");
             TAR.StoragePath = builder.Configuration.GetSection("DCAP").GetValue<string>("StoragePath");
+            TAR.UriPrefix = builder.Configuration.GetSection("DCAP").GetValue<string>("UriPrefix");
 
             builder.Services.AddApiVersioning(options =>
             {

@@ -23,6 +23,7 @@ namespace Compellio.DCAP.Web.RestApi.Models.V1
         public static string PrivateKey = String.Empty;
         public static string RPCEndPoint = String.Empty;
         public static string ChainId = String.Empty;
+        public static string UriPrefix = String.Empty;
         public static string TARIndexFilename => StoragePath + TARIndexFilenameLocal;
         public string Id { get; set; }
         public string Receipt { get; set; }
@@ -68,7 +69,7 @@ namespace Compellio.DCAP.Web.RestApi.Models.V1
             if (String.IsNullOrEmpty(tarId))
             {
                 //var contractAddress = await DeployContractAndGetAddress(checksum);
-                var contractResponse = await contract.DeployAsync("", checksumByteArray, RPCEndPoint, long.Parse(ChainId));
+                var contractResponse = await contract.DeployAsync(UriPrefix, checksumByteArray, RPCEndPoint, long.Parse(ChainId));
                 if (contractResponse.Exception != null)
                 {
                     throw new Exception("Contract deployment failed, please check that there are enough funds in the wallet corresponding to the provided private key in the configuration.", contractResponse.Exception);
