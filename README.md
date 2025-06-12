@@ -10,7 +10,7 @@ Make sure that Docker and Docker Compose are [installed](https://docs.docker.com
 
 Download the `docker-compose.yml` file to a local directory, and modify it as needed. 
 
-You must at least define the `DCAP__PrivateKey` environment variable. By default, the application will connect to the local Hardhat network configured under the [compellio/dcap-token-smart-contract](https://github.com/compellio/dcap-token-smart-contract) project. To connect to a custom network, set the `DCAP__BlockchainUrl` and `DCAP__BlockchainId`.
+You must at least define the `DCAP__PrivateKey` environment variable. By default, the application will connect to the local Hardhat network configured under the [compellio/dcap-token-smart-contract](https://github.com/compellio/dcap-token-smart-contract) project. To connect to a custom network, set the `DCAP__BlockchainUrl` and `DCAP__BlockchainId`. To provide a URI prefix for the `dataUri` smart contract method, set the `DCAP__UriPrefix`.
 
 Note: for the container to connect to a network running on the host, use the special DNS name `host.docker.internal` instead of `127.0.0.1` or `localhost`s, read more at <https://docs.docker.com/desktop/features/networking>.
 
@@ -45,5 +45,6 @@ docker run -it \
   -e DCAP__PrivateKey=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
   -e DCAP__BlockchainUrl=http://127.0.0.1:8545/ \
   -e DCAP__BlockchainId=31337 \
+  -e DCAP__UriPrefix=https://example.com/dcap/ \
   ghcr.io/compellio/dcap-web:latest
 ```
