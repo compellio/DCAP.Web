@@ -38,12 +38,13 @@ docker compose up -d
 Alternatively, to avoid using Docker Compose, you may also launch the service using the following Docker command:
 
 ```shell
+docker pull ghcr.io/compellio/dcap-web:latest
 docker run -it \
   -p 8080:8080 \
-  -v dcap-web-storage:/app/storage \
+  -v dcap-web-storage:/data \
   -e ASPNETCORE_ENVIRONMENT=Development \
   -e DCAP__PrivateKey=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
-  -e DCAP__BlockchainUrl=http://127.0.0.1:8545/ \
+  -e DCAP__BlockchainUrl=http://host.docker.internal:8545/ \
   -e DCAP__BlockchainId=31337 \
   -e DCAP__UriPrefix=https://example.com/dcap/ \
   ghcr.io/compellio/dcap-web:latest
