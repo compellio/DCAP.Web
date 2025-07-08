@@ -97,7 +97,8 @@ namespace Compellio.DCAP.Web.RestApi.Models.V1
             return newTar;
         }
 
-        public static async Task<IList<TAR>> FindAsync(IDictionary<string, string> filter) => TARs;
+        public static async Task<IList<TAR>> FindAsync(IDictionary<string, string> filter) => 
+            TARs.Where(x => filter.Values.Any(v => x.Data.RootElement.ToString().Contains(v))).ToArray();
 
         public static async Task<TAR> GetByReceiptIdAsync(string receiptID) => TARs.FirstOrDefault(x => x.Receipt == receiptID);
 
