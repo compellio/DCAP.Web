@@ -75,7 +75,7 @@ namespace Compellio.DCAP.Web.RestApi.Models.V1
                     throw new Exception("Contract deployment failed, please check that there are enough funds in the wallet corresponding to the provided private key in the configuration.", contractResponse.Exception);
                 }
 
-                newTar.Id = $"urn:tar:eip155.{ChainId}:{contractResponse.ContractAddress.Substring(2)}";
+                newTar.Id = $"urn:tar:eip155.{ChainId}:{contractResponse.ContractAddress}";
                 newTar.Version = 1;
             }
             else
