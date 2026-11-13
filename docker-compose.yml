@@ -1,17 +1,43 @@
-﻿services:
-  dcap-web:
-    image: ghcr.io/compellio/dcap-web
+﻿name: dcap-web-example
+services:
+  registry-api:
+    image: ghcr.io/compellio/dcap-web:latest
+    depends_on: [ ethereum ]
     ports:
-      - "8080:8080"
+      - "6060:8080"
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
+      # The following configures the Registry API instance to use a local Hardhat Network
+      # Replace with your own target network when you deploy.
       # WARNING: this account is publicly known: any funds sent to them on Mainnet or any other live network WILL BE LOST.
-      DCAP__PrivateKey: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
-      DCAP__BlockchainUrl: "http://host.docker.internal:8545/"
-      DCAP__BlockchainId: "31337"
-      DCAP__UriPrefix: "https://example.com/dcap/"
+      DCAP__PrivateKey: 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+      DCAP__BlockchainUrl: http://ethereum:8545/
+      DCAP__BlockchainId: 31337
+      DCAP__UriPrefix: https://registry.example.com/
+      ASPNETCORE_ENVIRONMENT: Development
     volumes:
-      - data:/data
+      - registry-data:/data
+
+  ethereum:
+    # Local Ethereum blockchain for testing (replace with live network when deploying)
+    image: ghcr.io/foundry-rs/foundry:stable
+    entrypoint: [ "anvil" ]
+    command: [ "--host", "0.0.0.0", "--state", "/state/anvil.json" ]
+    stop_grace_period: 30s
+    user: root
+    ports:
+      - "8545:8545"
+    volumes:
+      - anvil-state:/state
+  
+  explorer:
+    # Local Ethereum explorer for testing (use live network's explorer when deploying)
+    image: otterscan/otterscan:latest
+    depends_on: [ ethereum ]
+    ports:
+      - "5100:80"
+    environment:
+      ERIGON_URL: "http://127.0.0.1:8545"
 
 volumes:
-  data:
+  registry-data:
+  anvil-state:
