@@ -200,9 +200,32 @@ namespace Compellio.DCAP.SmartContracts.DCAPv2
             this.chainUrl = chainUrl;
             this.chainId = chainId;
             SignatureKey = signatureKey;
-            service = new DCAPv2Service(web3, contractAddress);
-            var value = await service.PushRequestAsync(checksum);
-            return value;
+
+            ContractResponse contractResponse = null;
+            try
+            {
+                var h = web3.Eth.GetContractHandler(contractAddress);
+                var pushFunction = new PushFunction();
+                pushFunction.Checksum = checksum;
+                var transactionReceipt = await h.SendRequestAndWaitForReceiptAsync(pushFunction);
+                contractResponse = new ContractResponse(transactionReceipt);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ContractDeploymentException)
+                {
+                    var e = ex as ContractDeploymentException;
+                    var receipt = e != null ? new ContractResponse(e.TransactionReceipt) : new ContractResponse(ex);
+                    receipt.Exception = ex;
+                    return receipt.Exception.ToString();
+                }
+                else
+                {
+                    return ex.ToString();
+                }
+            }
+
+            return contractResponse.TransactionHash;
         }
     }
 }
